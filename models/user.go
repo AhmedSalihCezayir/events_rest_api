@@ -8,13 +8,14 @@ import (
 )
 
 type User struct {
-	ID       int64
+	ID       int64 `json:",omitempty"`
+	Nickname string
 	Email    string `binding:"required"`
-	Password string `binding:"required"`
+	Password string `binding:"required" json:",omitempty"`
 }
 
 func (u *User) Save() error {
-	query := "INSERT INTO users (email, password) VALUES (?, ?)"
+	query := "INSERT INTO users (nickname, email, password) VALUES (?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -25,21 +26,21 @@ func (u *User) Save() error {
 	if err != nil {
 		return err
 	}
-	
-	result, err := stmt.Exec(u.Email, hashedPass)
+
+	result, err := stmt.Exec(u.Nickname, u.Email, hashedPass)
 	if err != nil {
 		return err
 	}
 	id, err := result.LastInsertId()
 	u.ID = id
-	
+
 	return err
 }
 
 func (u *User) ValidateCredentials() error {
 	query := "SELECT id, password FROM users WHERE email = ?"
 	row := db.DB.QueryRow(query, u.Email)
-	
+
 	var retrievedPassword string
 	err := row.Scan(&u.ID, &retrievedPassword)
 	if err != nil {

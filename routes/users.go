@@ -12,7 +12,7 @@ func signup(ctx *gin.Context) {
 	var user models.User
 
 	err := ctx.ShouldBindJSON(&user)
-	if err != nil {
+	if err != nil || user.Nickname == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data!"})
 		return
 	}

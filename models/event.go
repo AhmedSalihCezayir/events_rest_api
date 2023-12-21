@@ -130,7 +130,7 @@ func CancelRegistration(eventID, userID int64) error {
 
 func GetEventAttendees(eventID int64) ([]User, error) {
 	query := `
-	SELECT users.id, users.email, users.password
+	SELECT users.nickname, users.email
 	FROM users 
 	INNER JOIN registrations 
 	ON users.id = registrations.user_id
@@ -151,7 +151,7 @@ func GetEventAttendees(eventID int64) ([]User, error) {
 	var attendees []User
 	for rows.Next() {
 		var user User
-		err = rows.Scan(&user.ID, &user.Email, &user.Password)
+		err = rows.Scan(&user.Nickname, &user.Email)
 		if err != nil {
 			return nil, err
 		}
