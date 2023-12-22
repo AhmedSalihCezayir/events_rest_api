@@ -1,0 +1,2 @@
+DELETE http://localhost:8080/users/2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBleGFtcGxlLmNvbSIsImV4cCI6MTcwMzI1MTg2MiwiaXNBZG1pbiI6dHJ1ZSwidXNlcklkIjozfQ.fx30S5YeMb5fY4dN4GZtsKME-Hp6G3cxmf4qvaC0l8I

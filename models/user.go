@@ -38,6 +38,18 @@ func (u *User) Save() error {
 	return err
 }
 
+func (u User) Delete() error {
+	query := "DELETE FROM users WHERE id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(u.ID)
+	return err
+}
+
 func (u *User) ValidateCredentials() error {
 	query := "SELECT id, password, is_admin FROM users WHERE email = ?"
 	row := db.DB.QueryRow(query, u.Email)
@@ -62,7 +74,7 @@ func FindUserById(userID int64) (*User, error) {
 	row := db.DB.QueryRow(query, userID)
 
 	var user User
-	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Password)
+	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Password, &user.IsAdmin)
 	if err != nil {
 		return nil, err
 	}
