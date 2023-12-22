@@ -2,6 +2,13 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "email": "test@example.com",
-  "password": "test"
+  "email": "admin2@example.com",
+  "password": "admin2"
 }
+
+// test
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3MDMyNTE3MDMsImlzQWRtaW4iOmZhbHNlLCJ1c2VySWQiOjF9.JatrNGNjLjmNW6f1DzjNsn_xxbJrhSqqOTk6bQFqwGU
+
+
+// admin
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBleGFtcGxlLmNvbSIsImV4cCI6MTcwMzI1MTg2MiwiaXNBZG1pbiI6dHJ1ZSwidXNlcklkIjozfQ.fx30S5YeMb5fY4dN4GZtsKME-Hp6G3cxmf4qvaC0l8I

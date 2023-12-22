@@ -12,10 +12,11 @@ type User struct {
 	Nickname string
 	Email    string `binding:"required"`
 	Password string `binding:"required" json:",omitempty"`
+	IsAdmin  bool
 }
 
 func (u *User) Save() error {
-	query := "INSERT INTO users (nickname, email, password) VALUES (?, ?, ?)"
+	query := "INSERT INTO users (nickname, email, password, is_admin) VALUES (?, ?, ?, ?)"
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -27,7 +28,7 @@ func (u *User) Save() error {
 		return err
 	}
 
-	result, err := stmt.Exec(u.Nickname, u.Email, hashedPass)
+	result, err := stmt.Exec(u.Nickname, u.Email, hashedPass, u.IsAdmin)
 	if err != nil {
 		return err
 	}
@@ -38,11 +39,11 @@ func (u *User) Save() error {
 }
 
 func (u *User) ValidateCredentials() error {
-	query := "SELECT id, password FROM users WHERE email = ?"
+	query := "SELECT id, password, is_admin FROM users WHERE email = ?"
 	row := db.DB.QueryRow(query, u.Email)
 
 	var retrievedPassword string
-	err := row.Scan(&u.ID, &retrievedPassword)
+	err := row.Scan(&u.ID, &retrievedPassword, &u.IsAdmin)
 	if err != nil {
 		return errors.New("Invalid Credentials!")
 	}
@@ -70,7 +71,7 @@ func FindUserById(userID int64) (*User, error) {
 }
 
 func GetAllUsers() ([]User, error) {
-	query := "SELECT id, nickname, email FROM users"
+	query := "SELECT id, nickname, email, is_admin FROM users"
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -79,7 +80,7 @@ func GetAllUsers() ([]User, error) {
 	var users []User
 	for rows.Next() {
 		var user User
-		err = rows.Scan(&user.ID, &user.Nickname, &user.Email)
+		err = rows.Scan(&user.ID, &user.Nickname, &user.Email, &user.IsAdmin)
 		if err != nil {
 			return nil, err
 		}

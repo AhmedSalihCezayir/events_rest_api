@@ -27,7 +27,8 @@ func createTables() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nickname TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        is_admin INTEGER 
     )
     `
     _, err := DB.Exec(createUsersTable)
