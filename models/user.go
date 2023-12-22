@@ -55,3 +55,16 @@ func (u *User) ValidateCredentials() error {
 
 	return nil
 }
+
+func FindUserById(userID int64) (*User, error) {
+	query := "SELECT * FROM users WHERE id = ?"
+	row := db.DB.QueryRow(query, userID)
+
+	var user User
+	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}

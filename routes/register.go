@@ -75,3 +75,15 @@ func getEventAttendees(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, attendees)
 }
+
+func getUserRegisteredEvents(ctx *gin.Context) {
+	userID := ctx.GetInt64("userID")
+	
+	events, err := models.GetRegisterations(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "There was a problem when fetching user registrations."})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, events)
+}
