@@ -1,4 +1,4 @@
-# Events Rest Api #
+# Events Rest API #
 This project is an event management system with a RESTful API using Go, designed to facilitate various event-related operations. It includes endpoints for retrieving event details, managing user registrations, and handling user authentication. The API ensures data security through authentication mechanisms (JWT) and provides specific admin-only functionalities.
 
 In the project there are 3 types of endpoint access which are public, auth and admin. Public endpoints are accessible by everyone whereas to access an authenticated endpoint, an authentication token needs to be passed in request headers. Admin endpoints are only accessible by admin users and they are used to see and manage all users. Details of these endpoints can be seen below:
