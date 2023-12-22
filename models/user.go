@@ -101,3 +101,20 @@ func GetAllUsers() ([]User, error) {
 
 	return users, nil
 }
+
+func (u User) Update() error {
+	query := `
+	UPDATE users
+	SET nickname = ?, password = ?
+	WHERE id = ?
+	`
+
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	} 
+	defer stmt.Close()
+
+	_, err = stmt.Exec(u.Nickname, u.Password, u.ID)
+	return err
+} 

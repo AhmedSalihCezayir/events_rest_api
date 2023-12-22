@@ -1,0 +1,8 @@
+PUT http://localhost:8080/update-user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzAzMjU5ODM0LCJpc0FkbWluIjp0cnVlLCJ1c2VySWQiOjF9.hW2KFNy-ikpb49PjKS5z-Jy85A943cqw4kMGOOgI84Q
+
+{
+  "email": "admin@example.com",
+  "old_password": "nicer_admin",
+  "new_password": "admin"
+}

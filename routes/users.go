@@ -77,3 +77,53 @@ func deleteUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully."})
 }
+
+func updateUserInfo(ctx *gin.Context) {
+	userID := ctx.GetInt64("userID")
+
+	var changeRequest struct {
+		Nickname    string
+		Email       string `binding:"required"`
+		OldPassword string `binding:"required" json:"old_password"`
+		NewPassword string `json:"new_password"`
+	}
+
+	err := ctx.ShouldBindJSON(&changeRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data!"})
+		return
+	}
+
+	user, err := models.FindUserById(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not find user."}) // email is not matching for user with id: userID
+		return
+	}
+
+	isValidPass := utils.CheckPasswordHash(changeRequest.OldPassword, user.Password)
+	if user.Email != changeRequest.Email || !isValidPass {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials."}) // email is not matching for user with id: userID
+		return
+	}
+
+	if changeRequest.NewPassword != "" {
+		hashedNewPassword, err := utils.HashPassword(changeRequest.NewPassword)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "There was a problem when changing user information. Try again."})
+			return
+		}
+		user.Password = hashedNewPassword
+	}
+
+	if changeRequest.Nickname != "" {
+		user.Nickname = changeRequest.Nickname
+	}
+
+	err = user.Update()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "There was a problem when changing user information. Try again."})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User information changed successfully!"})
+}
