@@ -21,4 +21,6 @@ func RegisterRoutes(server *gin.Engine) {
 
 	server.POST("/signup", signup) // we could've directly added the middleware here as well
 	server.POST("/login", login)
+
+	server.GET("/users", getUsers)
 }
